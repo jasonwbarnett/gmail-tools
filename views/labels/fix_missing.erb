@@ -1,3 +1,11 @@
 Todo...
 
-<% for @gmail. %>
+<%= "Created #{@gmail.created_labels.length} labels." %>
+<% for @gmail.created_labels.each do |x| %>
+  <%= "x['old_label']  x['new_label']  x['message']" %><br/>
+<% end %>
+
+<%= "Renamed #{@gmail.renamed_labels.length.to_s} labels." %>
+<% for @gmail.renamed_labels.each do |x| %>
+  <%= "x['old_label']  x['new_label']  x['message']" %><br/>
+<% end %>
