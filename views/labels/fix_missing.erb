@@ -1,3 +1,7 @@
+<% if @error %>
+  <h2><%= @error %></h2>
+<% else %>
+
 <% if @gmail.dry_run == true %>
 This is a <b>dry run</b> which means that no changes have actually been made to the <%= @gmail.username %> account.<br/><br/><br/>
 <% end %>
@@ -10,4 +14,6 @@ This is a <b>dry run</b> which means that no changes have actually been made to 
 <u><%= "Renamed #{@gmail.renamed_labels.length.to_s} labels:" %></u><br/><br/>
 <% @gmail.renamed_labels.each do |x| %>
 <%= "\"#{x[:old_label]}\" renamed to \"#{x[:new_label]}\" ::: #{x[:message]}" %><br/>
+<% end %>
+
 <% end %>
