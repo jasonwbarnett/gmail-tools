@@ -31,20 +31,7 @@ class GmailTools
     label_counts.each do |k,v|
       next if k.nil? or k.empty? or k == "Inbox"
       if v > 1 and !gmail_labels.include?(k)
-        begin
-          @gmail.create_label k unless self.dry_run == true
-        rescue Net::IMAP::NoResponseError => e
-          if e.message =~ /Duplicate folder name/
-            self.created_labels << {label: k, message: "skipped, label already exists"}
-            puts "skipped, label already exists"
-          else
-            self.created_labels << {label: k, message: "ERROR: #{e.message}"}
-            $stderr.puts "ERROR: #{e.message}"
-          end
-        else
-          self.created_labels << {label: k, message: "Created!"}
-          puts "Created!"
-        end
+        create_label(k)
       end
     end
   end
@@ -59,11 +46,8 @@ class GmailTools
     end
 
     gmail_labels.each do |label|
-      if label =~ %r{^Inbox/}
-        updated_label = label.sub("Inbox/","#{self.renamed_inbox}/")
-      else
-        next
-      end
+      next unless label =~ %r{^Inbox/}
+      updated_label = label.sub("Inbox/","#{self.renamed_inbox}/")
 
       begin
         print "Renaming \"#{label}\" to \"#{updated_label}\"... "
@@ -76,5 +60,24 @@ class GmailTools
         puts "Success!"
       end
     end
+    create_label(self.renamed_inbox) if self.renamed_labels.count > 0
   end
+
+  private
+    def create_label(label)
+        begin
+          @gmail.create_label label unless self.dry_run == true
+        rescue Net::IMAP::NoResponseError => e
+          if e.message =~ /Duplicate folder name/
+            self.created_labels << {label: label, message: "skipped, label already exists"}
+            puts "skipped, label already exists"
+          else
+            self.created_labels << {label: label, message: "ERROR: #{e.message}"}
+            $stderr.puts "ERROR: #{e.message}"
+          end
+        else
+          self.created_labels << {label: label, message: "Created!"}
+          puts "Created!"
+        end
+    end
 end
