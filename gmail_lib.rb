@@ -13,16 +13,16 @@ class GmailTools
 
     @gmail = Gmail.new(username, password) 
   end
-  
+
   def create_missing_labels
     label_counts = Hash.new(0)
     @gmail.labels.each do |label|
       hierarchy = label.scan(%r{[^/]+})
       hierarchy.pop
-  
+
       label_counts[hierarchy.join('/')] += 1
     end
-  
+
     gmail_labels = @gmail.labels
     label_counts.each do |k,v|
       next if k.nil? or k.empty? or k == "Inbox"
@@ -44,7 +44,7 @@ class GmailTools
       end
     end
   end
-  
+
   ## Rename all Inbox/ labels to #{self.renamed_inbox}/
   def rename_inbox_to_mj_inbox
     gmail_labels = @gmail.labels
@@ -53,14 +53,14 @@ class GmailTools
       r = x.downcase <=> y.downcase if r == 0
       r
     end
-  
+
     gmail_labels.each do |label|
       if label =~ %r{^Inbox/}
         updated_label = label.sub("Inbox/","#{self.renamed_inbox}/")
       else
         next
       end
-  
+
       begin
         print "Renaming \"#{label}\" to \"#{updated_label}\"... "
         @gmail.rename_label(label, updated_label) unless self.dry_run == true
