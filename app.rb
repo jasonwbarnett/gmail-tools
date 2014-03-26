@@ -44,6 +44,8 @@ post '/labels/fix_missing' do
   begin
     @gmail = GmailTools.new(username, password, dry_run: dry_run)
     @gmail.create_missing_labels
+    #@gmail.rename_inbox_to_mj_inbox
+    #@gmail.create_missing_labels
   rescue Net::IMAP::NoResponseError => e
     $LOG.error e.message
   end
