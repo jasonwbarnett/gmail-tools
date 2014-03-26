@@ -1,0 +1,16 @@
+<h1>Fix missing labels</h1>
+<form action="/labels/fix_missing" method="post">
+  <label for="gmail_username">Username:</label><br />
+  <input name="gmail[username]" type="text" />
+  <br />
+ 
+  <label for="gmail_password">Password:</label><br />
+  <input name="gmail[password]" type="password" />
+  <br />
+
+  <label for="gmail_dryrun">Make changes when <b>checked</b> (otherwise, dry run):</label><br />
+  <input name="gmail[dry_run]" type="checkbox" value="false" />
+  <br />
+ 
+  <input type="submit" value="Fix!" />
+</form> 

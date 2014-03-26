@@ -1,0 +1,12 @@
+<html>
+<head>
+  <title><%= title %></title>
+  <% puts request.inspect %>
+</head>
+<body>
+  <ul>
+    <li><a href="/labels">Label Stuff</a></li>
+  </ul>
+  <%= yield %>
+</body>
+</html>
