@@ -36,8 +36,9 @@ class GmailTools
     end
   end
 
-  ## Rename all Inbox/ labels to #{self.renamed_inbox}/
-  def rename_inbox_to_mj_inbox
+
+  ## Rename all labels prefixed with #{rename_from}/... to #{rename_to}/...
+  def rename_labels_root(rename_from, rename_to)
     gmail_labels = @gmail.labels
     gmail_labels.sort! do |x,y|
       r = y.split('/').length <=> x.split('/').length
@@ -46,8 +47,8 @@ class GmailTools
     end
 
     gmail_labels.each do |label|
-      next unless label =~ %r{^Inbox/}
-      updated_label = label.sub("Inbox/","#{self.renamed_inbox}/")
+      next unless label =~ %r{^#{rename_from}/}
+      updated_label = label.sub(%r{^#{rename_from}/}, "#{rename_to}/")
 
       begin
         print "Renaming \"#{label}\" to \"#{updated_label}\"... "
@@ -60,8 +61,9 @@ class GmailTools
         puts "Success!"
       end
     end
-    create_label(self.renamed_inbox) if self.renamed_labels.count > 0
+    create_label(rename_to) if self.renamed_labels.count > 0
   end
+
 
   private
     def create_label(label)

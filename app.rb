@@ -39,24 +39,30 @@ end
 
 post '/labels/fix_missing' do
   $LOG.info "PARAMS: #{params[:gmail].inspect}"
-  username = params[:gmail]["username"]
-  password = params[:gmail]["password"]
+  username  = params[:gmail]["username"]
+  password  = params[:gmail]["password"]
 
-  dry_run  = true
-  dry_run  = false if params[:gmail]["dry_run"] == "false"
+  dry_run   = true
+  dry_run   = false if params[:gmail]["dry_run"] == "false"
 
-  rename   = "false"
-  rename   = "true"  if params[:gmail]["rename"]  == "true"
+  rename    = "false"
+  rename    = "true"  if params[:gmail]["rename"]  == "true"
 
-  cookies[:username] = username
-  cookies[:rename]   = rename
+  rename_from = params[:gmail]["rename_from"] ? params[:gmail]["rename_from"] : nil
+  rename_to   = params[:gmail]["rename_to"]   ? params[:gmail]["rename_to"]   : nil
+
+  ## Set cookies
+  cookies[:username]    = username
+  cookies[:rename]      = rename
+  cookies[:rename_from] = rename_from #unless rename_from.nil?
+  cookies[:rename_to]   = rename_to   #unless rename_to.nil?
 
   $LOG.info "#{username},#{password},#{dry_run.inspect}"
 
   begin
     @gmail = GmailTools.new(username, password, dry_run: dry_run)
     @gmail.create_missing_labels
-    @gmail.rename_inbox_to_mj_inbox if rename
+    @gmail.rename_labels_root(rename_from, rename_to) if rename == "true" and (!rename_from.nil? or !rename_to.nil?)
   rescue Net::IMAP::NoResponseError => e
     @error = e.message
     $LOG.error e.message

@@ -7,9 +7,21 @@
   <label for="gmail_password">Password:</label><br />
   <input name="gmail[password]" type="password" />
   <br />
+  <br />
 
-  <label for="gmail_rename">Rename all "Inbox/" labels to "MJ-Inbox/":</label><br />
+  <label for="gmail_rename">Rename labels prefixed with "Rename from" box to "Rename to" box:</label><br />
   <input name="gmail[rename]" type="checkbox" value="true" <%= "checked" if cookies[:rename] == "true" %>/>
+  <br />
+
+  <label for="gmail_rename_from">Rename from (e.g. Inbox, Posteingang, etc...):</label><br />
+  <input name="gmail[rename_from]" type="text" value="<%= cookies[:rename_from] %>"/>
+  <br />
+
+  <label for="gmail_rename_to">Rename to (e.g. MJ-Inbox, Newfolder, etc...):</label><br />
+  <input name="gmail[rename_to]" type="text" value="<%= cookies[:rename_to] %>"/>
+  <br />
+  <br />
+  <br />
   <br />
 
   <label for="gmail_dryrun">Makes changes when <b>checked</b> (otherwise, dry run):</label><br />
