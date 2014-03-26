@@ -41,10 +41,14 @@ post '/labels/fix_missing' do
 
   $LOG.info "#{username},#{password},#{dry_run}"
 
-  @gmail = GmailTools.new(username, password, dry_run: dry_run)
+  begin
+    @gmail = GmailTools.new(username, password, dry_run: dry_run)
+    @gmail.create_missing_labels
+  rescue Net::IMAP::NoResponseError => e
+    $LOG.error e.message
+  end
   $LOG.info @gmail.inspect
 
-  @gmail.create_missing_labels
 
   erb :"labels/fix_missing"
 end
