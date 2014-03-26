@@ -5,8 +5,12 @@ class GmailTools
   attr_accessor :renamed_inbox, :dry_run, :renamed_labels, :created_labels, :username
 
   def initialize(username, password, options={})
-    self.renamed_inbox  = options[renamed_inbox] ? options[renamed_inbox] : "MJ-Inbox"
-    self.dry_run        = options[dry_run]       ? options[dry_run]       : true
+    self.renamed_inbox  = options[:renamed_inbox] ? options[:renamed_inbox] : "MJ-Inbox"
+    if options[:dry_run] == false
+      self.dry_run = false
+    else
+      self.dry_run = true
+    end
     self.username       = username
     self.renamed_labels = []
     self.created_labels = []

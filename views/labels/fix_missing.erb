@@ -1,12 +1,13 @@
 <% if @gmail.dry_run == true %>
 This is a <b>dry run</b> which means that no changes have actually been made to the <%= @gmail.username %> account.<br/><br/><br/>
 <% end %>
-<%= "Created #{@gmail.created_labels.length} labels." %><br/><br/>
+<u><%= "Created #{@gmail.created_labels.length} labels:" %></u><br/><br/>
 <% @gmail.created_labels.each do |x| %>
-<%= printf("%-80s ::: %s", "\"#{x[:label]}\"", x[:message]) %><br/>
+<%= "\"#{x[:label]}\" :: #{x[:message]}" %><br/>
 <% end %>
 
-<%= "Renamed #{@gmail.renamed_labels.length.to_s} labels." %><br/><br/>
+<br/><br/>
+<u><%= "Renamed #{@gmail.renamed_labels.length.to_s} labels:" %></u><br/><br/>
 <% @gmail.renamed_labels.each do |x| %>
-<%= printf("%-55s ::: %s", "\"#{x[:old_label]}\" renamed to \"#{x[:new_label]}\"", x[:message]) %><br/>
+<%= "\"#{x[:old_label]}\" renamed to \"#{x[:new_label]}\" ::: #{x[:message]}" %><br/>
 <% end %>

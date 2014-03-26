@@ -39,7 +39,7 @@ post '/labels/fix_missing' do
   dry_run  = params[:gmail]["dry_run"]  ? params[:gmail]["dry_run"] : true
   dry_run  = false if dry_run == "false"
 
-  $LOG.info "#{username},#{password},#{dry_run}"
+  $LOG.info "#{username},#{password},#{dry_run.inspect}"
 
   begin
     @gmail = GmailTools.new(username, password, dry_run: dry_run)
