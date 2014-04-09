@@ -29,7 +29,7 @@ class GmailTools
 
     gmail_labels = @gmail.labels
     label_counts.each do |k,v|
-      next if k.nil? or k.empty? or k == "Inbox"
+      next if k.nil? or k.empty? or k == "Inbox" or k == "[Gmail]"
       if v > 1 and !gmail_labels.include?(k)
         create_label(k)
       end
